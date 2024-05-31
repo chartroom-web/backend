@@ -1,0 +1,4 @@
+.env
+/mariadb
+/node_modules
+/prod
