@@ -16,7 +16,7 @@ export async function sendMailToVertifyUsers(to: string, token: string) {
   const mailOptions = {
     from: process.env.GMAIL_USER,
     to: to,
-    subject: 'vertify your email address',
+    subject: 'verify your email address',
     text: `Please click the following link to verify your email address: http://localhost:${process.env.BACKEND_SERVER_PORT}/auth/vertify?token=${token}`,
   };
 

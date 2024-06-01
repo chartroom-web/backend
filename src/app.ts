@@ -10,7 +10,11 @@ dotenv.config();
 
 const app: express.Application = express();
 const port : number = process.env.BACKEND_SERVER_PORT ? parseInt(process.env.BACKEND_SERVER_PORT) : 3000;
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // 允许的前端地址
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true // 允许发送 Cookie
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(session({

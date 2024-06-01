@@ -46,7 +46,7 @@ class AuthController {
         } else {
           const session: any = req.session;
           session.user_id = userResults[0].id;
-          return res.status(200).send('Logged in');
+          return res.status(200).send({user_id: userResults[0].id, message: 'Logged in' });
         }
       } else {
         return res.status(400).send('Invalid email or password');
@@ -103,22 +103,16 @@ class AuthController {
 
       // 检查 Google ID 是否已经存在
       const googleIdCheckResults = await query('select count(*) as count from users where google_id = ?', [data.sub]);
-      if (googleIdCheckResults[0].count > 0) {
-          const session: any = req.session;
-          session.user_id = googleIdCheckResults[0].id;
-          console.log(data);
-          return res.status(200).send('Logged in');
+      if (googleIdCheckResults[0].count === 0) {
+        // 插入新用户
+        await query('insert into users (username, email, google_id, login_method, picture, is_email_verified) values (?, ?, ?, ?, ?, ?)', [data.name, data.email, data.sub, 2, data.picture, true]);
       }
-
-      // 插入新用户
-      await query('insert into users (username, email, google_id, login_method, picture, is_email_verified) values (?, ?, ?, ?, ?, ?)', [data.name, data.email, data.sub, 2, data.picture, true]);
-
       // 设置用户会话并发送响应
       const newUserResults = await query('select id from users where google_id = ?', [data.sub]);
       const session: any = req.session;
       session.user_id = newUserResults[0].id;
       console.log(data);
-      return res.status(201).send('User registered and logged in');
+      res.redirect(`http://localhost:${process.env.FRONTEND_SERVER_PORT}/home`);
 
     } catch (err) {
         console.error('Error authenticating with Google:', err);
@@ -144,7 +138,8 @@ class AuthController {
       res.status(401).send('User not logged in');
     }
   }
-  async vertify(req: Request, res: Response, next: NextFunction) {
+  
+  async verify(req: Request, res: Response, next: NextFunction) {
     console.log('Verifying email')
     const token = req.query.token;
     if (!token) {
