@@ -17,7 +17,7 @@ export async function sendMailToVertifyUsers(to: string, token: string) {
     from: process.env.GMAIL_USER,
     to: to,
     subject: 'verify your email address',
-    text: `Please click the following link to verify your email address: http://localhost:${process.env.BACKEND_SERVER_PORT}/auth/vertify?token=${token}`,
+    text: `Please click the following link to verify your email address: ${process.env.BACKEND_SERVER_PORT}/auth/vertify?token=${token}`,
   };
 
   transporter.sendMail(mailOptions, (err, info) => {

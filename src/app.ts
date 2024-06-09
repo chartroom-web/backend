@@ -9,9 +9,9 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const app: express.Application = express();
-const port : number = process.env.BACKEND_SERVER_PORT ? parseInt(process.env.BACKEND_SERVER_PORT) : 3000;
+const port : number = 4876;
 app.use(cors({
-  origin: 'http://localhost:5173', // 允许的前端地址
+  origin: ['http://localhost:5173'], // 允许的前端地址
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true // 允许发送 Cookie
 }));

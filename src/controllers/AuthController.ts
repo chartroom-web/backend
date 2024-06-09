@@ -112,7 +112,7 @@ class AuthController {
       const session: any = req.session;
       session.user_id = newUserResults[0].id;
       console.log(data);
-      res.redirect(`http://localhost:${process.env.FRONTEND_SERVER_PORT}/home`);
+      res.redirect(`${process.env.FRONTEND_SERVER_PORT}/home`);
 
     } catch (err) {
         console.error('Error authenticating with Google:', err);
@@ -138,7 +138,7 @@ class AuthController {
       res.status(401).send('User not logged in');
     }
   }
-  
+
   async verify(req: Request, res: Response, next: NextFunction) {
     console.log('Verifying email')
     const token = req.query.token;
