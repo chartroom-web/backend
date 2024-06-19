@@ -13,6 +13,10 @@ module.exports = {
         type: Sequelize.STRING
       }
     });
+    await queryInterface.bulkInsert('login_methods', [
+      { name: 'mail' },
+      { name: 'google'}
+    ]);
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('login_methods');
