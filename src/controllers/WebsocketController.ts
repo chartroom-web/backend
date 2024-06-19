@@ -62,6 +62,7 @@ class WebSocketController{
       type: 'message',
       from: from,
       text: text,
+      image: obj.image,
       time: new Date().getTime(),
       sender: onlineUsersMap.get(from),
       timestamp: obj.timestamp
