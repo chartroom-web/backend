@@ -22,7 +22,6 @@ class WebsocketRoute extends Route{
   private setupWebSocket() {
     this.wss.on('connection', (ws: WebSocket) => {
       console.log('[Client connected]');
-      this.WebsocketController.addClient(ws);
       ws.on('close', () => {
         console.log('Close connected');
       });
@@ -31,7 +30,11 @@ class WebsocketRoute extends Route{
         console.log(`Received message: ${message}`);
         const obj = JSON.parse(message);
         const type = obj.type;
-        if(type == 'online') this.WebsocketController.online(obj);
+        if(type == 'online') this.WebsocketController.online(obj, ws);
+
+        if(type == 'getonline') this.WebsocketController.getOnline();
+
+        if(type == 'message') this.WebsocketController.message(obj);
       });
     });
   }

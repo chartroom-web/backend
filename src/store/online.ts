@@ -1,0 +1,1 @@
+export let onlineUsersMap = new Map<Number, object>();
