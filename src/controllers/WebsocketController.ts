@@ -27,6 +27,11 @@ class WebSocketController{
     this.clients.get(id)!.push(ws);
     ws.on('close', () => {
       this.clients.delete(id);
+      const obj : any = onlineUsersMap.get(id)!;
+      this.message({
+        type: 'message',
+        from: id, to: -1, text: `${obj.username!}已離開聊天室`, isAnnouncement: true, image: obj.image, sender: obj
+      })
       onlineUsersMap.delete(id);
       this.boradcast({ type: 'online' })
     });
@@ -34,6 +39,10 @@ class WebSocketController{
 
   online(obj: any, ws: WebSocket){
     onlineUsersMap.set(obj.id, obj);
+    this.message({
+      type: 'message',
+      from: obj.id, to: -1, text: `${obj.username}已加入聊天室`, isAnnouncement: true, image: obj.image, timestamp: obj.timestamp, sender: onlineUsersMap.get(obj.from)
+    })
     this.addClient(obj.id, ws);
     this.boradcast({ type: 'online' });
   }
