@@ -63,8 +63,10 @@ class WebSocketController{
     const to = obj.to;
     const from = obj.from;
     const text = obj.text;
+    const isAnnouncement = obj.isAnnouncement;
     const data = {
       type: 'message',
+      isAnnouncement: isAnnouncement,
       from: from,
       to: to,
       text: text,
@@ -79,14 +81,18 @@ class WebSocketController{
     } else {
       const client = this.clients.get(to);
       const fromClient = this.clients.get(from);
-      for(const c of client!){
-        if(c.readyState === WebSocket.OPEN){
-          c.send(JSON.stringify(data));
+      if (client){
+        for(const c of client){
+          if(c.readyState === WebSocket.OPEN){
+            c.send(JSON.stringify(data));
+          }
         }
       }
-      for(const c of fromClient!){
-        if(c.readyState === WebSocket.OPEN){
-          c.send(JSON.stringify(data));
+      if(fromClient){
+        for(const c of fromClient){
+          if(c.readyState === WebSocket.OPEN){
+            c.send(JSON.stringify(data));
+          }
         }
       }
     }
