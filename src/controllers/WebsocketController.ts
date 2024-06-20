@@ -5,21 +5,26 @@ import { on } from 'events';
 
 
 class WebSocketController{
-  clients: Map<number, WebSocket>;
+  clients: Map<number, WebSocket[]>;
   constructor() {
     this.clients = new Map();
   }
 
   boradcast(data: any) {
     for (const [key, client] of this.clients) {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify(data));
+      for (const c of client) {
+        if (c.readyState === WebSocket.OPEN) {
+          c.send(JSON.stringify(data));
+        }
       }
     }
   }
 
   addClient(id: number, ws: WebSocket) {
-    this.clients.set(id, ws);
+    if (!this.clients.has(id)) {
+      this.clients.set(id, []);
+    }
+    this.clients.get(id)!.push(ws);
     ws.on('close', () => {
       this.clients.delete(id);
       onlineUsersMap.delete(id);
@@ -61,6 +66,7 @@ class WebSocketController{
     const data = {
       type: 'message',
       from: from,
+      to: to,
       text: text,
       image: obj.image,
       time: new Date().getTime(),
@@ -72,9 +78,16 @@ class WebSocketController{
       this.boradcast(data);
     } else {
       const client = this.clients.get(to);
-      // console.log('client', client);
-      if (client && client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify(data));
+      const fromClient = this.clients.get(from);
+      for(const c of client!){
+        if(c.readyState === WebSocket.OPEN){
+          c.send(JSON.stringify(data));
+        }
+      }
+      for(const c of fromClient!){
+        if(c.readyState === WebSocket.OPEN){
+          c.send(JSON.stringify(data));
+        }
       }
     }
   }
