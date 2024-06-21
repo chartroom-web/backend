@@ -11,11 +11,13 @@ dotenv.config();
 const app: express.Application = express();
 const port: number = 4876;
 
-app.use(cors({
+const options: cors.CorsOptions = {
   origin: [process.env.FRONTEND_SERVER_PORT! || "http://localhost:5173"], // 允许的前端地址
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true // 允许发送 Cookie
-}));
+};
+
+app.use(cors(options));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
