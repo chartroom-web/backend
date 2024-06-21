@@ -78,6 +78,20 @@ class AuthController {
       return res.status(500).send('Error registering user');
     }
   }
+
+  async temp_register(req: Request, res: Response, next: NextFunction) {
+    const { username } = req.body;
+    console.log('temp Registering user');
+    console.log(username);
+    try {
+      const result : any = await query('insert into users (username, email, password_hash, login_method) values (?, ?, ?, ?)', [username, null, null, 3]);
+      return res.status(201).send('User registered');
+    } catch (err) {
+      console.log(err);
+      return res.status(500).send('Error registering user');
+    }
+  }
+
   google_login(req: Request, res: Response, next: NextFunction){
     const authUrl = googleOAuth2Client.generateAuthUrl({
       access_type: 'offline',

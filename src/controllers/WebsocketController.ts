@@ -27,13 +27,18 @@ class WebSocketController{
     this.clients.get(id)!.push(ws);
     ws.on('close', () => {
       this.clients.delete(id);
-      const obj : any = onlineUsersMap.get(id)!;
-      this.message({
-        type: 'message',
-        from: id, to: -1, text: `${obj.username!}已離開聊天室`, isAnnouncement: true, image: obj.image, sender: obj
-      })
-      onlineUsersMap.delete(id);
-      this.boradcast({ type: 'online' })
+      try {
+        const obj : any = onlineUsersMap.get(id)!;
+        console.log(obj)
+        this.message({
+          type: 'message',
+          from: id, to: -1, text: `${obj.username!}已離開聊天室`, isAnnouncement: true, image: obj.image, sender: obj
+        })
+        onlineUsersMap.delete(id);
+        this.boradcast({ type: 'online' })
+      } catch (error) {
+        console.log(error)
+      }
     });
   }
 

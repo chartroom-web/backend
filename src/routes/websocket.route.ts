@@ -27,7 +27,7 @@ class WebsocketRoute extends Route{
       });
 
       ws.on('message', (message: string) => {
-        console.log(`Received message: ${message}`);
+        console.log(`Received message: ${JSON.stringify(message, (key, value) => key === 'image' ? undefined : value)}`);
         const obj = JSON.parse(message);
         const type = obj.type;
         if(type == 'online') this.WebsocketController.online(obj, ws);

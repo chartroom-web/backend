@@ -15,7 +15,8 @@ module.exports = {
     });
     await queryInterface.bulkInsert('login_methods', [
       { name: 'mail' },
-      { name: 'google'}
+      { name: 'google'},
+      { name: 'temp'}
     ]);
   },
   async down(queryInterface, Sequelize) {
