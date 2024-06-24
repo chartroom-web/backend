@@ -17,6 +17,7 @@ class AuthRoute extends Route{
     this.router.get('/google/callback', this.authController.google_callback);
     this.router.get('/me', this.authController.me);
     this.router.get('/verify', this.authController.verify);
+    this.router.post('/temp_register', this.authController.temp_register);
   }
 }
 

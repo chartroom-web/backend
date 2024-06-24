@@ -85,7 +85,10 @@ class AuthController {
     console.log(username);
     try {
       const result : any = await query('insert into users (username, email, password_hash, login_method) values (?, ?, ?, ?)', [username, null, null, 3]);
-      return res.status(201).send('User registered');
+      console.log(result.insertId);
+      const session: any = req.session;
+      session.user_id = result.insertId;
+      return res.status(200).send({user_id: result.insertId, message: 'quickstart Logged in' });
     } catch (err) {
       console.log(err);
       return res.status(500).send('Error registering user');
