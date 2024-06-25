@@ -39,6 +39,12 @@ class WebsocketRoute extends Route{
         if(type == 'message_game') this.WebsocketController.message_game(obj);
 
         if(type == 'delete_message_game') this.WebsocketController.delete_message_game(obj);
+
+        if(type == 'start_game') this.WebsocketController.start_game(obj);
+
+        if(type == 'select_number') this.WebsocketController.select_number(obj);
+
+        if(type == 'game_end') this.WebsocketController.game_end(obj);
       });
     });
   }

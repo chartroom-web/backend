@@ -172,6 +172,100 @@ class WebSocketController{
       }
     }
   }
+
+  start_game(obj: any){
+    console.log(obj)
+    const to = obj.to
+    const from = obj.from
+
+    const start = Math.random() < 0.5 ? from : to;
+
+    const data = {
+      type: 'start_game',
+      from: from,
+      to: to,
+      start: start,
+    }
+
+    const client = this.clients.get(to);
+    const fromClient = this.clients.get(from);
+    if (client){
+      for(const c of client){
+        if(c.readyState === WebSocket.OPEN){
+          c.send(JSON.stringify(data));
+        }
+      }
+    }
+    if(fromClient){
+      for(const c of fromClient){
+        if(c.readyState === WebSocket.OPEN){
+          c.send(JSON.stringify(data));
+        }
+      }
+    }
+
+  }
+
+  select_number(obj: any){
+    const to = obj.to
+    const from = obj.from
+    const number = obj.number
+
+    const data = {
+      type: 'select_number',
+      from: from,
+      to: to,
+      number: number,
+    }
+
+    const client = this.clients.get(to);
+    const fromClient = this.clients.get(from);
+    if (client){
+      for(const c of client){
+        if(c.readyState === WebSocket.OPEN){
+          c.send(JSON.stringify(data));
+        }
+      }
+    }
+    if(fromClient){
+      for(const c of fromClient){
+        if(c.readyState === WebSocket.OPEN){
+          c.send(JSON.stringify(data));
+        }
+      }
+    }
+  }
+
+  game_end(obj: any){
+    console.log(obj)
+    const to = obj.to
+    const from = obj.from
+    const win = obj.win
+
+    const data = {
+      type: 'game_end',
+      from: from,
+      to: to,
+      win: win,
+    }
+
+    const client = this.clients.get(to);
+    const fromClient = this.clients.get(from);
+    if (client){
+      for(const c of client){
+        if(c.readyState === WebSocket.OPEN){
+          c.send(JSON.stringify(data));
+        }
+      }
+    }
+    if(fromClient){
+      for(const c of fromClient){
+        if(c.readyState === WebSocket.OPEN){
+          c.send(JSON.stringify(data));
+        }
+      }
+    }
+  }
 }
 
 export default WebSocketController;
