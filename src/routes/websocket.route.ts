@@ -27,7 +27,7 @@ class WebsocketRoute extends Route{
       });
 
       ws.on('message', (message: string) => {
-        console.log(`Received message: ${JSON.stringify(message, (key, value) => key === 'image' ? undefined : value)}`);
+        console.log(`Received message: ${message}`);
         const obj = JSON.parse(message);
         const type = obj.type;
         if(type == 'online') this.WebsocketController.online(obj, ws);
@@ -35,6 +35,10 @@ class WebsocketRoute extends Route{
         if(type == 'getonline') this.WebsocketController.getOnline();
 
         if(type == 'message') this.WebsocketController.message(obj);
+
+        if(type == 'message_game') this.WebsocketController.message_game(obj);
+
+        if(type == 'delete_message_game') this.WebsocketController.delete_message_game(obj);
       });
     });
   }

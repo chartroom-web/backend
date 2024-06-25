@@ -111,6 +111,67 @@ class WebSocketController{
       }
     }
   }
+
+  message_game(obj: any){
+    console.log('message_game')
+    const to = obj.to;
+    const from = obj.from;
+    const isAnnouncement = obj.isAnnouncement;
+    const data = {
+      type: 'message_game',
+      isAnnouncement: isAnnouncement,
+      from: from,
+      to: to,
+      time: new Date().getTime(),
+      sender: onlineUsersMap.get(from),
+      timestamp: obj.timestamp
+    };
+    const client = this.clients.get(to);
+    const fromClient = this.clients.get(from);
+    if (client){
+      for(const c of client){
+        if(c.readyState === WebSocket.OPEN){
+          c.send(JSON.stringify(data));
+        }
+      }
+    }
+    if(fromClient){
+      for(const c of fromClient){
+        if(c.readyState === WebSocket.OPEN){
+          c.send(JSON.stringify(data));
+        }
+      }
+    }
+  }
+
+  delete_message_game(obj: any){
+    console.log(obj)
+    const to = obj.to;
+    const from = obj.from;
+    const id = obj.id;
+    const data = {
+      type: 'delete_message_game',
+      from: from,
+      to: to,
+      id: id,
+    };
+    const client = this.clients.get(to);
+    const fromClient = this.clients.get(from);
+    if (client){
+      for(const c of client){
+        if(c.readyState === WebSocket.OPEN){
+          c.send(JSON.stringify(data));
+        }
+      }
+    }
+    if(fromClient){
+      for(const c of fromClient){
+        if(c.readyState === WebSocket.OPEN){
+          c.send(JSON.stringify(data));
+        }
+      }
+    }
+  }
 }
 
 export default WebSocketController;
